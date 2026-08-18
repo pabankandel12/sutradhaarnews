@@ -1,11 +1,21 @@
 export type Story = {
-  id: number;
+  id: number | string;
   category: string;
   title: string;
   summary?: string;
   image: string;
   time: string;
   author?: string;
+};
+
+export function apiArticleToStory(article: import("./api").ApiArticle): Story {
+  return { id: article.id, category: article.category.name, title: article.title, summary: article.excerpt, image: article.featuredImage?.deliveryUrl || "https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80", time: article.publishedAt ? new Date(article.publishedAt).toLocaleDateString("ne-NP") : "भर्खरै", author: article.author.name };
+}
+
+export const categoryMap: Record<string, string> = {
+  samachar: "समाचार", rajniti: "राजनीति", artha: "अर्थ", samaj: "समाज",
+  pradesh: "प्रदेश", khelkud: "खेलकुद", manoranjan: "मनोरञ्जन",
+  prabidhi: "प्रविधि", bishwo: "विश्व", bichar: "विचार",
 };
 
 export const leadStories: Story[] = [
@@ -46,3 +56,9 @@ export const videos: Story[] = [
   { id: 9, category: "अन्तर्वार्ता", title: "समृद्धिको बाटो: विज्ञसँग विशेष संवाद", image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80", time: "आज" },
   { id: 10, category: "मैदानबाट", title: "दुर्गम गाउँमा बदलिँदै गरेको जनजीवन", image: "https://images.unsplash.com/photo-1518002054494-3a6f94352e9d?auto=format&fit=crop&w=900&q=80", time: "हिजो" },
 ];
+
+export const allStories = [...leadStories, ...latest, ...videos];
+
+export function getStory(id: number) {
+  return allStories.find((story) => story.id === id);
+}

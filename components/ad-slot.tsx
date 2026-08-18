@@ -1,0 +1,3 @@
+import { publicApi } from "@/lib/api";
+type Ad={id:string;name:string;placement:string;imageUrl?:string;targetUrl?:string;adCode?:string};
+export async function AdSlot({placement,className=""}:{placement:string;className?:string}){const ads=await publicApi<Ad[]>("/ads/active").catch(()=>[]);const ad=ads.find(item=>item.placement===placement);if(!ad)return <div className={`ad ${className}`}>विज्ञापनका लागि सुरक्षित स्थान</div>;if(ad.imageUrl)return <a className={`ad live-ad ${className}`} href={ad.targetUrl||"#"} target="_blank" rel="sponsored noreferrer"><img src={ad.imageUrl} alt={ad.name}/></a>;return <div className={`ad ${className}`} dangerouslySetInnerHTML={{__html:ad.adCode||ad.name}}/>}
