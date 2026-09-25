@@ -1,8 +1,7 @@
 export function Logo() {
   return (
-    <div className="brand" aria-label="सूत्रधार न्यूज">
-      <div className="brand-mark" aria-hidden="true"><span /><span /><i /></div>
-      <div className="brand-copy"><strong>सूत्रधार</strong><small>NEWS</small></div>
-    </div>
+    <a className="brand" href="/" aria-label="सूत्रधार न्यूज">
+      <img className="brand-logo" src="/logo.png" alt="सूत्रधार न्यूज" />
+    </a>
   );
 }

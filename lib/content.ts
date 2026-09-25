@@ -1,5 +1,6 @@
 export type Story = {
   id: number | string;
+  slug?: string;
   category: string;
   title: string;
   summary?: string;
@@ -9,7 +10,7 @@ export type Story = {
 };
 
 export function apiArticleToStory(article: import("./api").ApiArticle): Story {
-  return { id: article.id, category: article.category.name, title: article.title, summary: article.excerpt, image: article.featuredImage?.deliveryUrl || "https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80", time: article.publishedAt ? new Date(article.publishedAt).toLocaleDateString("ne-NP") : "भर्खरै", author: article.author.name };
+  return { id: article.id, slug: article.slug, category: article.category?.name || "समाचार", title: article.title, summary: article.excerpt, image: article.featuredImage?.deliveryUrl || "/logo.jpg", time: article.publishedAt ? new Date(article.publishedAt).toLocaleDateString("ne-NP") : "भर्खरै", author: article.author?.name || "सूत्रधार संवाददाता" };
 }
 
 export const categoryMap: Record<string, string> = {

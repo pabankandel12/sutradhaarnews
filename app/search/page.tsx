@@ -1,19 +1,10 @@
 "use client";
-
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { StoryList } from "@/components/story-list";
-import { allStories } from "@/lib/content";
 import { apiArticleToStory, type Story } from "@/lib/content";
-import { ApiArticle, browserApi } from "@/lib/api";
-
-export default function SearchPage() {
-  const [query, setQuery] = useState("");
-  const [stories,setStories]=useState<Story[]>([]);
-  useEffect(()=>{browserApi<ApiArticle[]>("/articles/public").then(items=>items.length&&setStories(items.map(apiArticleToStory))).catch(()=>{})},[]);
-  const results = useMemo(() => query.trim() ? stories.filter(story => `${story.title} ${story.category} ${story.summary || ""}`.toLowerCase().includes(query.trim().toLowerCase())) : stories.slice(0, 5), [query,stories]);
-  return <><Header /><main className="container inner-page"><header className="archive-header"><span>खोज</span><h1>समाचार खोज्नुहोस्</h1><p>शीर्षक, विषय वा समाचारको शब्द लेखेर खोज्नुहोस्।</p></header><div className="search-box"><FontAwesomeIcon icon={faMagnifyingGlass} /><input autoFocus value={query} onChange={event => setQuery(event.target.value)} placeholder="उदाहरण: अर्थतन्त्र, खेलकुद, प्रविधि..." /></div><p className="result-count">{query ? `“${query}” का लागि ${results.length} नतिजा` : "हालका प्रमुख समाचार"}</p>{results.length ? <StoryList stories={results} /> : <div className="empty-state"><h2>समाचार भेटिएन</h2><p>फरक वा छोटो शब्द प्रयोग गरेर पुनः खोज्नुहोस्।</p></div>}</main><Footer /></>;
-}
+import { ApiArticle, ApiPage, browserApi } from "@/lib/api";
+export default function SearchPage() { const [query, setQuery] = useState(""), [stories, setStories] = useState<Story[]>([]), [total, setTotal] = useState<number | null>(null), [loading, setLoading] = useState(false); useEffect(() => { const q = query.trim(); if (!q) { setStories([]); setTotal(null); return; } const timer = setTimeout(() => { setLoading(true); browserApi<ApiPage<ApiArticle>>(`/articles/public/page?q=${encodeURIComponent(q)}`).then((result) => { setStories(result.data.map(apiArticleToStory)); setTotal(result.meta.total); }).catch(() => { setStories([]); setTotal(0); }).finally(() => setLoading(false)); }, 300); return () => clearTimeout(timer); }, [query]); return <><Header /><main className="container inner-page"><header className="archive-header"><span>खोज</span><h1>समाचार खोज्नुहोस्</h1><p>शीर्षक, विषय वा समाचारको शब्द लेखेर खोज्नुहोस्।</p></header><div className="search-box"><FontAwesomeIcon icon={faMagnifyingGlass} /><input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="उदाहरण: अर्थतन्त्र, खेलकुद, प्रविधि..." /></div>{loading ? <p className="result-count">खोजिँदैछ...</p> : query.trim() ? <><p className="result-count">“{query}” का लागि {total ?? 0} नतिजा</p>{stories.length ? <StoryList stories={stories} /> : <div className="empty-state"><h2>समाचार भेटिएन</h2><p>फरक वा छोटो शब्द प्रयोग गरेर पुनः खोज्नुहोस्।</p></div>}</> : <div className="empty-state"><h2>खोज्न सुरु गर्नुहोस्</h2><p>तपाईंले खोज्न चाहेको शब्द लेख्नुहोस्।</p></div>}</main><Footer /></>; }

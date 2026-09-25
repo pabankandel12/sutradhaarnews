@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faMagnifyingGlass, faUser, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faCalendarDays, faChartLine, faMagnifyingGlass, faUser, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Logo } from "./logo";
 
 const nav = [
@@ -23,6 +23,8 @@ export function Header() {
           <button className="icon-button mobile-only" onClick={() => setOpen(!open)} aria-label="मेनु खोल्नुहोस्"><FontAwesomeIcon icon={open ? faXmark : faBars} /></button>
           <Logo />
           <div className="header-actions">
+            <span className="header-date"><FontAwesomeIcon icon={faCalendarDays} /> २८ साउन २०८३</span>
+            <Link className="live-button" href="/category/samachar"><FontAwesomeIcon icon={faChartLine} /> लाइभ</Link>
             <Link className="icon-button link-button" href="/search" aria-label="खोज्नुहोस्"><FontAwesomeIcon icon={faMagnifyingGlass} /></Link>
             <Link className="login-button" href="/login"><FontAwesomeIcon icon={faUser} /> लगइन</Link>
           </div>

@@ -2,11 +2,13 @@ export const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://sutradhaarnew
 
 export type ApiArticle = {
   id:string; title:string; slug:string; excerpt?:string; content?:{text?:string}|string; type:string; status:string;
-  category:{id:string;name:string;slug:string}; author:{id:string;name:string}; featuredImage?:{id:string;deliveryUrl?:string;url:string}|null;
-  publishedAt?:string; createdAt:string; allowComments:boolean;
+  category:{id:string;name:string;slug:string}; author:{id:string;name:string}; featuredImage?:{id:string;title?:string|null;deliveryUrl?:string;url:string}|null;
+  publishedAt?:string; createdAt:string; allowComments:boolean; seoTitle?: string; seoDescription?: string; canonicalUrl?: string; tags?: { id:string; name:string; slug:string }[];
 };
 
-export type ApiCategory = { id:string; name:string; slug:string };
+export type ApiCategory = { id:string; name:string; slug:string; description?: string | null };
+export type ApiPage<T> = { data: T[]; meta: { page: number; limit: number; total: number; totalPages: number } };
+export type ApiHeadline = { id:string; title:string; summary?:string|null; url?:string|null; isBreaking:boolean; active:boolean; order:number; createdAt:string };
 
 export async function publicApi<T>(path:string, options:RequestInit={}) {
   const response = await fetch(`${API_URL}${path}`, { ...options, headers:{"Content-Type":"application/json",...options.headers}, next: options.method ? undefined : { revalidate: 60 } });
