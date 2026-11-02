@@ -1,5 +1,3 @@
+import Link from "next/link";
 import { Logo } from "./logo";
-
-export function Footer() {
-  return <footer className="footer"><div className="container footer-grid"><div><Logo /><p>सत्य, सन्तुलित र विश्वसनीय पत्रकारितामार्फत समाजलाई सुसूचित बनाउने हाम्रो प्रतिबद्धता।</p></div><div><h3>समाचार</h3><a href="#">राजनीति</a><a href="#">अर्थ</a><a href="#">खेलकुद</a><a href="#">विश्व</a></div><div><h3>सूत्रधार</h3><a href="#">हाम्रो बारेमा</a><a href="#">सम्पर्क</a><a href="#">विज्ञापन</a><a href="#">गोपनीयता</a></div><div><h3>सम्पर्क</h3><p>काठमाडौं, नेपाल<br />news@sutradhaar.com<br />+९७७ ०१-XXXXXXX</p></div></div><div className="copyright">© २०८३ सूत्रधार न्यूज। सर्वाधिकार सुरक्षित।</div></footer>;
-}
+export function Footer() { return <footer className="footer"><div className="container footer-grid"><div><Logo /><p>सत्य, सन्तुलित र विश्वसनीय पत्रकारितामार्फत समाजलाई सुसूचित बनाउने हाम्रो प्रतिबद्धता।</p></div><div><h3>समाचार</h3><Link href="/category/rajniti">राजनीति</Link><Link href="/category/artha">अर्थ</Link><Link href="/category/khelkud">खेलकुद</Link><Link href="/category/bishwo">विश्व</Link></div><div><h3>हेर्नुहोस्</h3><Link href="/gallery">फोटो ग्यालरी</Link><Link href="/search">खोज</Link><Link href="/register">पाठक खाता</Link></div><div><h3>सम्पर्क</h3><p>काठमाडौं, नेपाल<br />news@sutradhaar.com</p></div></div><div className="copyright">© सूत्रधार न्यूज। सर्वाधिकार सुरक्षित।</div></footer>; }

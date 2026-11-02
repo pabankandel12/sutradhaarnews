@@ -1,8 +1,8 @@
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://sutradhaarnews-api.onrender.com/api/v1";
 
 export type ApiArticle = {
-  id:string; title:string; slug:string; excerpt?:string; content?:{text?:string}|string; type:string; status:string;
-  category:{id:string;name:string;slug:string}; author:{id:string;name:string}; featuredImage?:{id:string;title?:string|null;deliveryUrl?:string;url:string}|null;
+  id:string; title:string; slug:string; excerpt?:string; content?:{text?:string;html?:string}|string; type:string; status:string;
+  category:{id:string;name:string;slug:string}; author:{id:string;name:string;avatarUrl?:string|null}; featuredImage?:{id:string;title?:string|null;deliveryUrl?:string;url:string}|null;
   publishedAt?:string; createdAt:string; allowComments:boolean; seoTitle?: string; seoDescription?: string; canonicalUrl?: string; tags?: { id:string; name:string; slug:string }[];
 };
 

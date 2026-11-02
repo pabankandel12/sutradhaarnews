@@ -7,7 +7,11 @@ import { ApiArticle, ApiCategory, ApiPage, publicApi } from "@/lib/api";
 
 export default async function CategoryPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ page?: string }> }) {
   const { slug } = await params, { page = "1" } = await searchParams;
-  const [categories, result] = await Promise.all([publicApi<ApiCategory[]>("/categories").catch(() => []), publicApi<ApiPage<ApiArticle>>(`/articles/public/page?category=${encodeURIComponent(slug)}&page=${encodeURIComponent(page)}`).catch(() => null)]);
+  const pageNumber = Math.max(1, Number.parseInt(page, 10) || 1);
+  // Older deployed API versions reject a string `page=1`; omit the default page
+  // so category navigation remains compatible during rolling deployments.
+  const pageQuery = pageNumber > 1 ? `&page=${pageNumber}` : "";
+  const [categories, result] = await Promise.all([publicApi<ApiCategory[]>("/categories").catch(() => []), publicApi<ApiPage<ApiArticle>>(`/articles/public/page?category=${encodeURIComponent(slug)}${pageQuery}`).catch(() => null)]);
   const category = categories.find((item) => item.slug === slug);
   if (!category) notFound();
   const stories = result?.data.map(apiArticleToStory) || [];

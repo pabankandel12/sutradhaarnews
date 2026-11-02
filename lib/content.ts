@@ -10,7 +10,9 @@ export type Story = {
 };
 
 export function apiArticleToStory(article: import("./api").ApiArticle): Story {
-  return { id: article.id, slug: article.slug, category: article.category?.name || "समाचार", title: article.title, summary: article.excerpt, image: article.featuredImage?.deliveryUrl || "/logo.jpg", time: article.publishedAt ? new Date(article.publishedAt).toLocaleDateString("ne-NP") : "भर्खरै", author: article.author?.name || "सूत्रधार संवाददाता" };
+  const media = article.featuredImage;
+  const image = media?.url?.startsWith("http") && !media.url.includes("res.cloudinary.com/") ? media.url : media?.deliveryUrl || media?.url || "/logo.jpg";
+  return { id: article.id, slug: article.slug, category: article.category?.name || "समाचार", title: article.title, summary: article.excerpt, image, time: article.publishedAt ? new Date(article.publishedAt).toLocaleDateString("ne-NP") : "भर्खरै", author: article.author?.name || "सूत्रधार संवाददाता" };
 }
 
 export const categoryMap: Record<string, string> = {
